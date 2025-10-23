@@ -2,7 +2,7 @@ import re
 import typing
 
 if __name__ == '__main__': # business as usual
-    import pp 
+    import jl95terceira.pytools.pp as pp
 else: # running in unittest or other
     from . import pp 
 
@@ -26,4 +26,8 @@ class Processor(pp.Processor):
                                                        repl    =lambda output,match,rex=rex               : f'{COMMENT_BEGIN} {BODY(rex)}{match.group(1)}{COMMENT_END}\n{output}{COMMENT_BEGIN} {TAIL(rex)} {COMMENT_END}') for abort_if_match_safe_rex,rex in [(True,  REGEX), 
                                                                                                                                                                                                                                                                 (False, SAFE_REGEX)]])
 
-if __name__ == '__main__': pp.main_simple(Processor(), 'HTML')
+def main():
+
+    pp.main_simple(Processor(), 'HTML')
+
+if __name__ == '__main__': main()
