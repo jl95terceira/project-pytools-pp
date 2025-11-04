@@ -51,7 +51,7 @@ class ProcessingInstruction:
     pattern :str
     capture :typing.Callable[[re.Match],str]
     descape :typing.Callable[[str],str]
-    repl    :typing.Callable[[str],bool]
+    repl    :typing.Callable[[str,re.Match],str]
 
     def __post_init__(self):
 
@@ -65,8 +65,8 @@ class Processor:
         self._pis = pis
 
     def __call__(self, file_getter :typing.Callable[[],io.TextIOWrapper],
-                       ofile_getter:typing.Callable[[],io.TextIOWrapper]|None=None,
-                       working_dir :str                                 |None=None):
+                       ofile_getter:typing.Callable[[],io.TextIOWrapper],
+                       working_dir :str|None=None):
 
         pis = self._pis
         f   = file_getter()
@@ -77,7 +77,8 @@ class Processor:
 
             pp = BufferWriter()
             original_wd = os.path.abspath(os.getcwd())
-            os.chdir(working_dir)
+            if working_dir is not None: 
+                os.chdir(working_dir)
             try:
 
                 sys.path.append(os.getcwd())
@@ -93,7 +94,8 @@ class Processor:
             
             finally:
 
-                os.chdir(original_wd)
+                if working_dir is not None:
+                    os.chdir(original_wd)
             
             return pp.build()
 

@@ -2,7 +2,7 @@ import re
 import typing
 
 if __name__ == '__main__': # business as usual
-    import jl95terceira.pytools.pp as pp
+    import jl95.pytools.pp as pp
 else: # running in unittest or other
     from . import pp 
 
